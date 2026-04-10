@@ -5,22 +5,50 @@
         Всего:  | Избранные: | Показано: 
     </p>
 
-    <input type="text" placeholder="Поиск фильма" v-model="search">
+    <input 
+        :value="search" 
+        @input="$emit('update:search', $event.target.value)" 
+        placeholder="Поиск фильма"/>
 
     <label>
-        <input type="checkbox" v-model="onlyLiked">Только избранные
+        <input type="checkbox"
+        :checked = "onlyLiked"
+        @change="$emit('update:onlyLiked',$event.target.checked)"/>
+        Только избранные
     </label>
 
     <label>
-        <input type="checkbox" v-model="onlyNewer" >Только после 2010
+        <input type="checkbox"
+        :checked = "onlyNewer"
+        @change="$emit('update:onlyNewer',$event.target.checked)"/>
+        Только после 2010
     </label>
 
-    <select v-model="SortBy">
+    <select :value="sortBy" 
+    @change="$emit('update:sortBy',$event.target.value)">
         <option value="title">Сортировка: название</option>
         <option value="rating">Сортировка: рейтинг</option>
         <option value="year">Сортировка: год</option>
     </select>
 
-    <button @click="resetFilter()">Сброс</button>
+    <button @click="$emit('reset')">Сброс</button>
     </div>
 </template>
+
+<script setup>
+
+defineProps({
+    search: String,
+    onlyLiked: Boolean,
+    onlyNewer: Boolean,
+    sortBy: String
+})
+
+defineEmits([
+    'update:search',
+    'update:onlyLiked',
+    'update:onlyNewer',
+    'update:sortBy',
+    'reset'
+])
+</script>

@@ -1,6 +1,33 @@
+<template>
+ 
+<div>
+  <FilterForm
+  v-model:search="search"  
+  v-model:onlyLiked="onlyLiked"
+  v-model:onlyNewer="onlyNewer"
+  v-model:sortBy = "sortBy"
+  @reset="resetFilter"
+  />
+
+  <FilmAddForm
+  v-model:title="title"
+  v-model:rating="rating"
+  v-model:year="year"
+  :error="error"
+  @add="addMovie"
+  @toggle="toggleLike"
+  @remove ="removeMovie"
+  />
+  
+</div>
+
+</template>
+
 <script setup>
 
 import {ref,computed} from 'vue'
+import FilterForm from './components/FilterForm.vue'
+import FilmAddForm from './components/FilmAddForm.vue'
 
 const movies = ref([
   {id:1,title:"Чарли и шоколадная фабрика", year: 2012, rating:9.2, liked: false},
@@ -78,31 +105,3 @@ function resetFilter(){
 }
 
 </script>
-
-<template>
- 
-<div>
-  <h3>Добавить фильма</h3>
-  <input type="text" placeholder="Название" v-model="newTitle">
-  <input type="text" placeholder="Рейтинг(0-10)" v-model="newRating">
-  <input type="text" placeholder="Год" v-model="newYear">
-  <button @click="addMovie()">Добавить</button>
-  
-  <p v-if="error">{{error}}</p>
-
-  <p v-if="filteredMovies.length ===0">Ничего не найдено</p>
-  <ul v-else>
-    <li v-for="movie in filteredMovies" :key="movie.id">
-      {{movie.title}}
-      {{movie.year}}
-      {{movie.rating}}
-      <button @click="toggleLike(movie)">{{movie.liked ? "❤":"🤍"}}</button>
-      <button @click="removeMovie(movie.id)">Удалить</button>
-    </li>
-  </ul>
-</div>
-
-</template>
-
-<style scoped>
-</style>
